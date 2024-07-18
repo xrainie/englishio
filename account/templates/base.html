@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}Главная страница{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %} 
+    {% bootstrap_javascript %}
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/adaptive.css' %}" />
+    <link rel="icon" href="/media/images/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
+      rel="stylesheet"/>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
+      <div class="container-fluid  justify-content-around">
+          <a class="navbar-brand" href="/">Главная</a>
+          <ul class="navbar-nav w-75">
+            <li class="nav-item w-100 search-box">
+                <form class="form-inline w-100 d-flex nowrap" method="get" action="#">
+                    <input class="form-control" type="text" placeholder="Поиск" name="word" id="word" />
+                    <button class="btn btn-outline-success" type="submit">Искать</button>
+                </form>
+                <div class="word_tips"></div>
+            </li>
+          </ul>
+          {% if request.user.is_authenticated %}
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+              <ul class="navbar-nav m-2">
+                  <li class="nav-item text-end pe-5">
+                      <a class="nav-link" href="#">Профиль</a>
+                  </li>
+                  <li class="nav-item text-end pe-5">
+                      <a class="nav-link" href="#">Упражнения</a>
+                  </li>
+                  <li class="nav-item text-end pe-5">
+                      <a class="nav-link" href="{% url 'account:logout' %}">Выйти</a>
+                  </li>
+              </ul>
+          </div>
+          {% endif %}
+          {% if not request.user.is_authenticated %}
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'account:login' %}">Войти</a>
+            </li>
+          </ul>
+          {% endif %}
+      </div>
+  </nav>
+  
+    {% block content %}
+    <div class="main">
+      <div class="block ">
+        {% if messages %}
+        <div class="notifications">
+            {% for message in messages %}
+            <div class="notification alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="center-text">
+          <h3 class="big-text">Welcome to enlearn</h3>
+          <p class="left-text indent">
+            Хелоу май френд, зис из сайт хелп ту ю... Короче, братишка или
+            сетричка! Добро пожаловать на сайт, который поможет вам изучать
+            английские слова! Здесь, собранны все слова, которые помогут тебе
+            охмурить любого англоговорящего, также есть упражения,
+            которые облегчают и структурируют процесс обучения. Вы же не хотите забыть
+            нужное слово в споре? Будете потом бесконечно прокручивать в голове, как бы
+            сказали и так и эдок. Так что сидим учим!
+          </p>
+          <h2 class="left-text">Ультра упражения</h2>
+          <p class="left-text indent">
+            Безумно мощные! Невероятно прогрессивные! Иии... да, самые простые.
+            Зато рабочие! Дам вам секрет, только никому! Не усложняйте свою
+            жизнь!
+          </p>
+          <h2 class="left-text">Потрясающий профиль</h2>
+          <p class="left-text indent">
+            Обожаете цифры? Любите следить за процессом? Хотите контролировать и
+            домировать? Ах ты мой маленький больной уб... Точнее круто, что для таких как вы,
+            я создал профиль, где вы можете утолить свои желания, следите за всем
+            своим прогрессом обучения!
+          </p>
+          <h2 class="left-text">База слов</h2>
+          <p class="left-text indent">
+            Это база! Лично путешествовал по миру, собирая крупицы смысла каждого слова. 
+            Был на грани жизни и смерти, сражался с саблезубым
+            тигром в Индии, чтобы мудрец, рассказал секреты индийского акцента. Разбирался
+            в сокращениях автралийцев. И черт меня побрал, общался с
+            подлинными англичанами! Боже упаси меня повторить... Бутылка воды... Бутылка воды...
+            Вы слышали, как они это говорят? ВЫ СЛЫШАЛИ??? И теперь
+            предлагаю всё это совершенно бесплатно без смс и регистрации!
+          </p>
+          <h2 class="left-text">Есть вопросики?</h2>
+          <p class="left-text indent">
+            Если есть удивительные идеи, как улучшить сайт. Безумная ярость
+            из-за ошибок на сайте. Безграчная благодарность и вы незнаете, кому
+            это высказать. То ваш покорный слуга находится тут:
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+  </body>
+  {% comment %} <script src="{% static 'js/search-word.js' %}"></script>
+  <script>
+    let wordListUrl = "{% url 'words:word_list' %}";
+    let wordDetailUrl = "{% url 'words:word_detail' %}"
+    let search = document.querySelector('.form-control')
+    searchWord(wordListUrl,wordDetailUrl,search)
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        {% block domready %}
+        {% endblock %}
+    })
+  </script> {% endcomment %}
+</html>
