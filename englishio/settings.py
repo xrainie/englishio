@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap5',
     'word.apps.WordConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
