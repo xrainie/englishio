@@ -123,7 +123,7 @@
     </div>
     {% endblock %}
   </body>
-  {% comment %} <script src="{% static 'js/search-word.js' %}"></script>
+  <script src="{% static 'js/search-word.js' %}"></script>
   <script>
     let wordListUrl = "{% url 'words:word_list' %}";
     let wordDetailUrl = "{% url 'words:word_detail' %}"
@@ -135,5 +135,5 @@
         {% block domready %}
         {% endblock %}
     })
-  </script> {% endcomment %}
+  </script>
 </html>

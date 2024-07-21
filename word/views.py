@@ -40,3 +40,23 @@ def word_list(request):
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         
     return JsonResponse({'error': 'method not allowed'}, status=405)
+
+
+class WordViewSet(viewsets.ModelViewSet):
+    queryset = Word.objects.all()
+    serializer_class = WordSerializer
+
+    def get_permissions(self):
+        if self.action == 'retrieve':
+            return [AllowAny()]
+        return [IsAdminUser()]
+    
+
+class ExampleViewSet(viewsets.ModelViewSet):
+    queryset = Example.objects.all()
+    serializer_class = ExampleSerializer
+
+    def get_permissions(self):
+        if self.action == 'retrieve':
+            return [AllowAny()]
+        return [IsAdminUser()]

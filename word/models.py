@@ -77,6 +77,7 @@ class Sound(models.Model):
 class Phrase(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE, related_name='phrases')
     phrase = models.CharField(max_length=255, blank=True)
+    translate = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.phrase

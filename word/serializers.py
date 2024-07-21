@@ -81,7 +81,7 @@ class ExampleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Example
-        fields = ['name', 'translate', 'words']
+        fields = ['translate', 'words']
 
     def create(self, validated_data):
         example = Example.objects.create(**validated_data)
