@@ -46,7 +46,8 @@ def _words_for_exercises(user):
 
 def _get_all_studywords(user):
     """Получить слова, которые нужно выучить сегодня"""
-    words = StudyWord.objects.filter(learner__user=user, time_learning__lte=pytz.timezone('Europe/Moscow').localize(datetime.now()))
+    words = StudyWord.objects.filter(learner__user=user,)
+                                     # time_learning__lte=pytz.timezone('Europe/Moscow').localize(datetime.now()))
     words_data = json.dumps(list(words.values()), cls=DjangoJSONEncoder)
     return words_data
 

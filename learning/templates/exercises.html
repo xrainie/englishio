@@ -4,11 +4,11 @@
 <div class="main">
   <div class="block">
     <div class="buttuns">
-      <button type="button" class="btn btn-outline-danger biathlon big">
-        Биатлон(В разработке)
+      <button type="button" class="btn btn-outline-success biathlon big">
+        Биатлон
       </button>
-      <button type="button" class="btn btn-outline-success remember big">
-        Вспомнить всё
+      <button type="button" class="btn btn-outline-danger remember big">
+        Вспомнить всё(В разработке)
       </button>
     </div>
     <h2 class="left-text">Справка</h2>
@@ -43,8 +43,8 @@
 {% block domready %} 
 let btnR = document.querySelector('button.remember') 
 btnR.addEventListener('click', (e) =>{
-     window.location.href = '{% url "learning:remember_all" %}' }) 
+     window.location.href = '#' }) 
 let btnB = document.querySelector('button.biathlon') 
 btnB.addEventListener('click', (e) =>{
-     window.location.href = '#' }) 
+     window.location.href = '{% url "learning:biathlon" %}' }) 
      {% endblock %}
