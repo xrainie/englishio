@@ -1,4 +1,3 @@
-from ast import pattern
 from datetime import datetime, timedelta
 
 import pytz
