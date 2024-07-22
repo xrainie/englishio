@@ -30,7 +30,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('account.urls', namespace='account')),
     path('words/', include('word.urls', namespace='words')),
-    path('api/v1/', include(router.urls))
+    path('learning/', include('learning.urls', namespace='learning')),
+    path('api/v1/', include(router.urls)),
 ]
 
 

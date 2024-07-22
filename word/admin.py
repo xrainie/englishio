@@ -22,7 +22,7 @@ class PhraseInline(admin.TabularInline):
 
 @admin.register(Word)
 class WordAdmin(admin.ModelAdmin):
-    list_display = ('name', 'short_description', 'rank')
+    list_display = ('pk', 'name', 'short_description', 'rank')
     inlines = [SoundInline, DescriptionInline, FormInline, PhraseInline]
 
 

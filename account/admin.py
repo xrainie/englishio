@@ -1,3 +1,14 @@
 from django.contrib import admin
+from .models import Learner, StudyWord
 
-# Register your models here.
+class StudyWordInline(admin.TabularInline):
+    model = StudyWord
+    extra = 1
+    raw_id_fields = ('word',)
+    list_display = ('time_learning', )
+
+
+@admin.register(Learner)
+class LearnerAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+    inlines = [StudyWordInline]

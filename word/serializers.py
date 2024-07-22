@@ -38,21 +38,24 @@ class WordSerializer(serializers.ModelSerializer):
     sounds = SoundSerializer(many=True)
     phrases = PhraseSerializer(many=True)
     forms = FormSerializer(many=True)
+    examples = ExampleSerializerWord(many=True, read_only=True)
 
     class Meta:
         model = Word
-        fields = ['pk', 'name', 'short_description', 'rank', 'descriptions', 'sounds', 'phrases', 'forms', 'examples']
-    
+        # fields = ['id', 'name', 'short_description', 'rank', 'descriptions', 'sounds', 'phrases', 'forms', 'examples']
+        fields = '__all__'
+
     def create(self, validated_data):
         descriptions_data = validated_data.pop('descriptions', [])
         sounds_data = validated_data.pop('sounds', [])
         phrases_data = validated_data.pop('phrases', [])
         forms_data = validated_data.pop('forms', [])
 
+        # Проверка существования слова
         existing_word = Word.objects.filter(name=validated_data['name']).first()
         if existing_word:
-            raise IntegrityError('Такое слово уже существует')
-        
+            raise IntegrityError("Слово с таким названием уже существует.")
+
         word = Word.objects.create(**validated_data)
 
         for description_data in descriptions_data:
@@ -73,7 +76,7 @@ class WordSerializer(serializers.ModelSerializer):
 class WordSerializerExample(serializers.ModelSerializer):
     class Meta:
         model = Word
-        fields = ['example', 'short_description', 'rank']
+        fields = ['id', 'examples', 'short_description', 'rank']
 
 
 class ExampleSerializer(serializers.ModelSerializer):
@@ -81,7 +84,7 @@ class ExampleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Example
-        fields = ['translate', 'words']
+        fields = ['id', 'translate', 'words']
 
     def create(self, validated_data):
         example = Example.objects.create(**validated_data)

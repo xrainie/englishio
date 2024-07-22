@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+
+
+<div class="main">
+    <div class="profile">
+        {% if messages %}
+        <div class="notifications">
+            {% for message in messages %}
+            <div class="notification alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="info">
+            <div class="head-info">
+                <h3>Профиль {{user|title}}:</h3>
+                
+            </div>
+            <div class="first-section">
+                <div class="ChartWeek">
+                    <canvas id="ChartWeek" ></canvas>
+                </div>       
+                <div class="ChartLearned">
+                    <canvas id="ChartLearned"></canvas>
+                </div>
+                <div class="ChartLearned2">
+                    <canvas id="ChartLearned2"></canvas>
+                </div>
+                <div class="static">
+                    <p>Статистика слов:</p>   
+                    {% for stage, count in study_words.items %}
+                    <p class="info-words">{{stage}}: {{count}}</p>
+                    {% endfor %}
+                </div>
+                <div class="form-year">
+                    <h3>Активность за 2024 год</h3>
+                    <svg id="mySvg" xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="-10 50 950 150"></svg>
+                </div>
+            </div> 
+        </div>                         
+    </div>
+
+    
+</div>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+<script>
+    var svgElement = document.getElementById('mySvg');
+
+    // Функция для обновления viewBox
+    function updateViewBox() {
+        var newViewBox = window.innerWidth < 1000 ? "-300 50 1225 150" : "-180 50 1120 150";
+        svgElement.setAttribute('viewBox', newViewBox);
+    }
+
+    // Вызываем функцию при загрузке страницы и при изменении размера окна
+    window.addEventListener('load', updateViewBox);
+    window.addEventListener('resize', updateViewBox);
+</script>
+{% load static %}
+<script src="{% static 'js/activity-week.js' %}"></script>
+<script src="{% static 'js/learned-for-1000.js' %}"></script>
+<script src="{% static 'js/learned-all.js' %}"></script>
+<script src="{% static 'js/activity-year.js' %}"></script>
+{% endblock %}
+
+{% block domready %}
+
+const activity = {{ activity|safe }};
+const static = {{ study_words|safe }}
+drawChartWeek(activity)
+drawChartLearned(static)
+drawChartLearnedAll(static)
+generateYearCalendar(2024,activity);
+{% endblock %}

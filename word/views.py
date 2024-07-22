@@ -3,6 +3,8 @@ from django.http import JsonResponse, Http404
 
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.response import Response
+from rest_framework import status
 
 from .services import _get_description, _get_dict_words_with_short_description, _get_form
 from .models import Word, Example
@@ -50,6 +52,14 @@ class WordViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             return [AllowAny()]
         return [IsAdminUser()]
+    
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
     
 
 class ExampleViewSet(viewsets.ModelViewSet):

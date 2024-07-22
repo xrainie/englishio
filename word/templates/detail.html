@@ -101,7 +101,7 @@
 
 
 {% block domready %}
-    {% comment %} const generalMeanings = document.querySelectorAll('div.general-meaning')
+    const generalMeanings = document.querySelectorAll('div.general-meaning')
     for (let generalMeaning of generalMeanings){
         const deepMeanings = generalMeaning.querySelectorAll('.deep-meaning')
         if (deepMeanings.length != 0) {
@@ -182,5 +182,5 @@
         await checkWord('{{word.name}}')
     })
 
-    checkWord('{{word.name}}') {% endcomment %}
+    checkWord('{{word.name}}')
 {% endblock %}
