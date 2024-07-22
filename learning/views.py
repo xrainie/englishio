@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
+from account.redis import _increment_learner_action, _get_user_actions_for_all_days
 from .services import _get_study_word_count_for_stage, _words_for_exercises, _get_all_studywords, \
     _increment_stage, _decrement_stage
 from account.models import Learner, StudyWord
@@ -12,9 +13,11 @@ from word.models import Word
 
 @login_required
 def profile(request):
+    activity = _get_user_actions_for_all_days(request.user)
     study_word_count_for_stage = _get_study_word_count_for_stage(request.user)
     return render(request, 'profile/profile.html', {'user': request.user, 
-                                                    'study_words': study_word_count_for_stage})
+                                                    'study_words': study_word_count_for_stage,
+                                                    'activity': activity})
 
 @login_required
 def exercises(request):
@@ -28,6 +31,7 @@ def remember_all(request):
 
 @login_required
 def biathlon(request):
+    _increment_learner_action(request.user, 'start_learning_word')
     return render(request, 'exercises/biathlon.html')
 
 def all_study_words(request):
@@ -47,13 +51,13 @@ def create_study_word(request):
         word = data['word']
     new_word = StudyWord.objects.create(learner=Learner.objects.get(user=user), word=Word.objects.get(name=word))
     new_word.save()
-    # _increment_learner_action(user, 'start_learning_word')
+    _increment_learner_action(user, 'start_learning_word')
     return JsonResponse({'message': 'Данные успешно получены и обработаны.'})
 
 
 @csrf_exempt
 def is_study_word(request):
-    """Проверить слово, изучаеться ли пользователем"""
+    """Проверить слово, изучается ли пользователем"""
     user = request.user
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
@@ -78,7 +82,7 @@ def change_level_word(request):
             next_stage = _increment_stage(word.stage_learning_word)
             word.stage_learning_word = next_stage
             word.save()
-            # _increment_learner_action(request.user, f'up to {next_stage}')
+            _increment_learner_action(request.user, f'up to {next_stage}')
         elif data['level'] == 'down':
             prev_stage = _decrement_stage(word.stage_learning_word)
             word.stage_learning_word = prev_stage

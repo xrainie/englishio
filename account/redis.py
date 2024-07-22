@@ -5,7 +5,7 @@ import redis
 from django.conf import settings
 
 
-r = redis.Redis.from_url(settings.CACHES['default']['LOCATION'])
+r = redis.Redis(host='localhost', port=6379, db=0)
 
 
 def _get_day(offset=0):
@@ -29,9 +29,9 @@ def _get_user_actions_for_day(user_id, day):
         return {field.decode('utf-8'): int(value) for field, value in stored_data.items()}
     
 def _get_user_actions_for_all_days(user):
-    pattern = f'user:{user}'
+    pattern = f'user:{user}:*'
     keys = r.keys(pattern)
-    result = []
+    result = {}
 
     for key in keys:
         stored_data = r.hgetall(key)
