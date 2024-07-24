@@ -42,7 +42,6 @@ class WordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Word
-        # fields = ['id', 'name', 'short_description', 'rank', 'descriptions', 'sounds', 'phrases', 'forms', 'examples']
         fields = '__all__'
 
     def create(self, validated_data):

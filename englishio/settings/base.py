@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
-from django.conf.global_settings import CACHES, LOGIN_REDIRECT_URL, LOGIN_URL, LOGOUT_REDIRECT_URL, MEDIA_ROOT
+from django.conf.global_settings import CACHES, LOGIN_REDIRECT_URL, LOGIN_URL, LOGOUT_REDIRECT_URL, MEDIA_ROOT, STATIC_ROOT
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rb_=7kep#sppj9-v!33)10-9ga_ja4=$x%qa@k!6nh5c7+rkxj'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -153,3 +154,5 @@ CACHES = {
         }
     }
 }
+
+STATIC_ROOT = BASE_DIR / 'static'

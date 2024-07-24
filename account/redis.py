@@ -5,7 +5,7 @@ import redis
 from django.conf import settings
 
 
-r = redis.Redis(host='localhost', port=6379, db=0)
+r = redis.Redis(host='cache', port=6379, db=0)
 
 
 def _get_day(offset=0):
